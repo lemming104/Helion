@@ -325,8 +325,11 @@ public class SaveMenu : Menu
             }
 
             var chars = input.ConsumeTypedCharacters();
-            m_customNameBuilder.Append(chars);
-            m_defaultSavedGameName = string.Empty;
+            if (chars.Length > 0)
+            {
+                m_customNameBuilder.Append(chars);
+                m_defaultSavedGameName = string.Empty;
+            }
 
             if (m_customNameBuilder.Length > 128)
                 m_customNameBuilder.Length = 128;
