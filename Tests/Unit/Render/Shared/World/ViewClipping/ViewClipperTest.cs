@@ -553,9 +553,9 @@ public class ViewClipperTest
         ViewClipper.DiamondAngleFromRadians(0).Should().Be(0);
         ViewClipper.DiamondAngleFromRadians(Math.PI / 2).Should().Be(1073741823);
         ViewClipper.DiamondAngleFromRadians(Math.PI).Should().Be(2147483647);
-        ViewClipper.DiamondAngleFromRadians(-Math.PI / 2).Should().Be(1073741823);
+        ViewClipper.DiamondAngleFromRadians(-Math.PI / 2).Should().Be(3221225471);
         ViewClipper.DiamondAngleFromRadians(-Math.PI).Should().Be(2147483647);
-        ViewClipper.DiamondAngleFromRadians(76).Should().Be(411353375);
+        ViewClipper.DiamondAngleFromRadians(76).Should().Be(411353391);
     }
 
     [Fact(DisplayName = "ToDiamondAngle")]
