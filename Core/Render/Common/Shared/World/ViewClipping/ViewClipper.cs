@@ -100,11 +100,15 @@ public class ViewClipper
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint DiamondAngleFromRadians(double radians)
+    public unsafe static uint DiamondAngleFromRadians(double radians)
     {
         unchecked
         {
-            return (uint)(Math.Abs(radians) * RadiansToDiamondAngleFactor);
+            const double TwoPi = Math.PI * 2;
+            radians %= TwoPi;
+            if (radians < 0)
+                radians = TwoPi + radians;
+            return (uint)(radians * RadiansToDiamondAngleFactor);
         }
     }
 
