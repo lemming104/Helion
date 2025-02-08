@@ -5,3 +5,5 @@
 ## Bug fixes:
   - Fix bug where VSync and rate limiter changes were only applied after a restart
   - Fix bug that would cause a crash on map load with large amounts of voodoo dolls
+  - Fix dehacked per ammo for weapon ammo give amounts
+  - Fix A_FireCGun to use vanilla frame index calculation for dehacked
