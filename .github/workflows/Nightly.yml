@@ -35,12 +35,14 @@ jobs:
       run: zip -r ../../Helion-${{ github.ref_name }}-linux-x64_AOT.zip *
       working-directory: Publish/linux-x64_AOT
 
-    - name: Update nightly release
-      uses: pyTooling/Actions/releaser@r0
+    - name: Update nightly release (Linux)
+      uses: svenstaro/upload-release-action@v2
       with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: *.zip
         tag: nightly
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: '*.zip'
+        overwrite: true
+        file_glob: true
         
   buildNightlyWindows:
     runs-on: windows-2022
@@ -65,10 +67,12 @@ jobs:
       run: Compress-Archive -Path .\Publish\win-x64_SelfContained\* -DestinationPath .\Helion-${{ github.ref_name }}-win-x64_SelfContained.zip
     - name: Zip Windows AOT
       run: Compress-Archive -Path .\Publish\win-x64_AOT\* -DestinationPath .\Helion-${{ github.ref_name }}-win-x64_AOT.zip
-      
-    - name: Update nightly release
-      uses: pyTooling/Actions/releaser@r0
+
+    - name: Update nightly release (Windows)
+      uses: svenstaro/upload-release-action@v2
       with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: *.zip
         tag: nightly
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: '*.zip'
+        overwrite: true
+        file_glob: true
