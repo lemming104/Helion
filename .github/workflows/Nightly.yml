@@ -24,22 +24,21 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Dotnet Publish Linux
-      run: dotnet publish -c Release -r win-x64 Client/Client.csproj -p:SelfContainedRelease=true
+      run: dotnet publish -c Release -r linux-x64 Client/Client.csproj -p:SelfContainedRelease=true
     - name: Dotnet Publish Linux AOT
-      run: dotnet publish -c Release -r win-x64 Client/Client.csproj -p:AOT=true
+      run: dotnet publish -c Release -r linux-x64 Client/Client.csproj -p:AOT=true
       
     - name: Zip Linux Self-Contained
-      run: zip -r ../../Helion-${{ github.ref_name }}-win-x64_SelfContained.zip *
-      working-directory: Publish/win-x64_SelfContained
+      run: zip -r ../../Helion-${{ github.ref_name }}-linux-x64_SelfContained.zip *
+      working-directory: Publish/linux-x64_SelfContained
     - name: Zip Linux AOT
-      run: zip -r ../../Helion-${{ github.ref_name }}-win-x64_AOT.zip *
-      working-directory: Publish/win-x64_AOT
+      run: zip -r ../../Helion-${{ github.ref_name }}-linux-x64_AOT.zip *
+      working-directory: Publish/linux-x64_AOT
 
     - name: Update nightly release
       uses: pyTooling/Actions/releaser@r0
       with:
         tag: nightly
-        rm: true
         token: ${{ secrets.GITHUB_TOKEN }}
         files: '*.zip'
         
