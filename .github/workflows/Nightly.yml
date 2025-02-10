@@ -62,11 +62,9 @@ jobs:
       run: dotnet publish -c Release -r win-x64 Client/Client.csproj -p:AOT=true
       
     - name: Zip Windows Self-Contained
-      run: zip -r ../../Helion-${{ github.ref_name }}-win-x64_SelfContained.zip *
-      working-directory: Publish/win-x64_SelfContained
+      run: Compress-Archive -Path .\Publish\win-x64_SelfContained\* -DestinationPath .\Helion-${{ github.ref_name }}-win-x64_SelfContained.zip
     - name: Zip Windows AOT
-      run: zip -r ../../Helion-${{ github.ref_name }}-win-x64_AOT.zip *
-      working-directory: Publish/win-x64_AOT
+      run: Compress-Archive -Path .\Publish\win-x64_AOT\* -DestinationPath .\Helion-${{ github.ref_name }}-win-x64_AOT.zip
       
     - name: Update nightly release
       uses: pyTooling/Actions/releaser@r0
