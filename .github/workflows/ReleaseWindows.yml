@@ -1,0 +1,49 @@
+# This workflow will build, publish, and release Helion.
+# Release detail text is copied from RELEASENOTES.md.
+# Release files will include source snapshots, and ZIP files with prebuilt executables for Linux and Windows (both single-file and runtime-dependent)
+
+# Release checklist:
+# 1.  Update RELEASENOTES.md
+# 2.  Update version info in Directory.Build.props
+# 3.  Ensure you are synced to a commit that includes the updated state of (1) and (2); run `git pull` if needed
+# 4.  Create a new tag, e.g. `git tag 0.9.5.0`
+# 5.  Push the new tag, e.g. `git push origin 0.9.5.0`
+
+name: Make .NET Release
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  buildReleaseWindows:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Dotnet Publish Windows Self-Contained
+      run: dotnet publish -c Release -r win-x64 -p:SelfContainedRelease=true Client/Client.csproj
+    - name: Dotnet Publish Windows AOT
+      run: dotnet publish -c Release -r win-x64 -p:AOT=true Client/Client.csproj
+    - name: Install zip
+      uses: montudor/action-zip@v1
+    - name: Zip Windows Self-Contained
+      run: zip -r ../../Helion-${{ github.ref_name }}-win-x64_SelfContained.zip *
+      working-directory: Publish/win-x64_SelfContained
+    - name: Zip Windows AOT
+      run: zip -r ../../Helion-${{ github.ref_name }}-win-x64_AOT.zip *
+      working-directory: Publish/win-x64_AOT
+    - name: Make Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "*.zip"
+        bodyFile: "RELEASENOTES.md"
